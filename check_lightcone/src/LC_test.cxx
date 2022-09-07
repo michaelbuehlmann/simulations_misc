@@ -12,13 +12,13 @@ void LC_test::Allocate(size_t n) {
     this->num_parts = n;
 
     this->id = new vector<int64_t>(this->num_parts);
-    this->replication = new vector<int32_t>(this->num_parts); 
+    this->replication = new vector<int32_t>(this->num_parts);
 
 
     for (int i=0; i<N_LC_FLOATS; ++i)
       this->float_data[i] = new vector<float>(this->num_parts);
 
-    this->tag2idx = new map<int64_t,int>(); 
+    this->tag2idx = new map<int64_t,int>();
 
   }
   else {
@@ -87,13 +87,14 @@ lc_properties_test LC_test::GetProperties(size_t idx) {
 
     for (int i=0; i<N_LC_FLOATS; ++i)
       lc_properties.float_data[i] = this->float_data[i]->at(idx);
-    
+
     return lc_properties;
   }
   else {
     cerr << "ERROR: Can't get properties -- vectors are not allocated."\
         << endl;
     ;// do some graceful exit of the program
+    MPI_Abort(MPI_COMM_WORLD, -322);
   }
 }
 

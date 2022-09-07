@@ -20,12 +20,12 @@
 
 #include "LC_test.h"
 
-#include "MurmurHashNeutral2.cpp" 
+#include "MurmurHashNeutral2.h"
 
 
 /// Assumes ids and replication values are consistent but ordering may have changed
-/// Redistributes amongst ranks and sorts the values for a one-to-one check of the changes in 
-/// each of the main lightcone outputs 
+/// Redistributes amongst ranks and sorts the values for a one-to-one check of the changes in
+/// each of the main lightcone outputs
 
 
 // Cosmotools
@@ -55,7 +55,7 @@ int  compute_mean_std_dist(vector<float> *val1 , vector<float> *val2 , int count
   rank = Partition::getMyProc();
   n_ranks = Partition::getNumProc();
 
-  double diff=0; 
+  double diff=0;
   double diff_frac=0;
   int n_tot;
   double frac_max;
@@ -77,8 +77,8 @@ int  compute_mean_std_dist(vector<float> *val1 , vector<float> *val2 , int count
    MPI_Allreduce(&diff, &mean, 1, MPI_DOUBLE, MPI_SUM,  Partition::getComm());
    MPI_Allreduce(&diff_frac, &frac_max, 1, MPI_DOUBLE, MPI_MAX, Partition::getComm());
    MPI_Allreduce(&meanq, &meanq_tot, 1, MPI_DOUBLE, MPI_SUM,  Partition::getComm());
-   MPI_Allreduce(&count, &n_tot, 1, MPI_INT, MPI_SUM,  Partition::getComm());  
-   mean = mean/n_tot;   
+   MPI_Allreduce(&count, &n_tot, 1, MPI_INT, MPI_SUM,  Partition::getComm());
+   mean = mean/n_tot;
    meanq_tot = meanq_tot/n_tot;
 
    for (int i=0; i< count; i++){
@@ -139,13 +139,13 @@ void read_lc_file(LC_test &L0, string file_name) {
   GenericIO GIO(Partition::getComm(),file_name,GenericIO::FileIOMPI);
   GIO.openAndReadHeader(GenericIO::MismatchRedistribute);
   size_t num_elems = GIO.readNumElems();
-  
+
   L0.Resize(num_elems + GIO.requestedExtraSpace());
- 
+
 
   GIO.addVariable("id", *(L0.id), true);
   GIO.addVariable("replication", *(L0.replication), true);
-  
+
   for (int i=0; i<N_LC_FLOATS; ++i)
 	  GIO.addVariable((const string) float_var_names_test[i], *(L0.float_data[i]),true);
 
@@ -293,7 +293,7 @@ int main( int argc, char** argv ) {
    std::sort(lc_halo_recv2.begin(),lc_halo_recv2.end(),comp_by_id);
    std::stable_sort(lc_halo_recv2.begin(),lc_halo_recv2.end(),comp_by_rep);
 
-   // at this point we have saved all the data 
+   // at this point we have saved all the data
   if (rank == 0)
     cout << "Sorted" << endl;
 
@@ -354,7 +354,7 @@ int main( int argc, char** argv ) {
                 }
               }
            if (not_found){
-             L_1.Erase(i); 
+             L_1.Erase(i);
 	     -- numl1;
 	   }
          }
@@ -376,7 +376,7 @@ int main( int argc, char** argv ) {
       if ((rank==0)&&(err==0)){
       cout << " Results " << endl;
       cout << " ______________________________ " << endl;
-      cout << endl;      
+      cout << endl;
       cout << " Comparison test passed! " << endl;
       cout << " All variables within threshold of "  << lim << endl;
       cout << " Total number of non-matching halos = "<< ndiff_tot+ndiff_tot2 << endl;
@@ -396,8 +396,8 @@ int main( int argc, char** argv ) {
   }
 
 
-  
- 
+
+
  L_1.Deallocate();
  L_2.Deallocate();
 
