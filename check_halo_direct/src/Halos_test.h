@@ -19,7 +19,7 @@ using namespace std;
 struct halo_properties_test {
   int64_t fof_halo_tag;
   int32_t fof_halo_count;
-  int64_t sod_halo_count;
+  int32_t sod_halo_count;
   int32_t rank;
   float float_data[N_HALO_FLOATS];
   float ellipticity_data[N_HALO_FLOATS_E];
@@ -52,13 +52,13 @@ public:
 
   vector<int64_t>* fof_halo_tag;
   vector<int32_t>* fof_halo_count;
-  vector<int64_t>* sod_halo_count;
+  vector<int32_t>* sod_halo_count;
 
   vector<vector<float>* > float_data;
   vector<vector<float>* > ellipticity_data;
 
   // destination rank for redistribution
-  vector<int32_t>* rank; 
+  vector<int32_t>* rank;
 
   // map for the halo tag to the index in the local arrays
   map<int64_t,int>* tag2idx;

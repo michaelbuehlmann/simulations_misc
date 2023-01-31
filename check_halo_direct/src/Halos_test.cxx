@@ -33,8 +33,8 @@ void Halos_test::Allocate(size_t n) {
     this->num_halos = n;
 
     this->fof_halo_tag = new vector<int64_t>(this->num_halos);
-    this->fof_halo_count = new vector<int32_t>(this->num_halos); 
-    this->sod_halo_count = new vector<int64_t>(this->num_halos);
+    this->fof_halo_count = new vector<int32_t>(this->num_halos);
+    this->sod_halo_count = new vector<int32_t>(this->num_halos);
 
 
     for (int i=0; i<N_HALO_FLOATS; ++i)
@@ -43,7 +43,7 @@ void Halos_test::Allocate(size_t n) {
     for (int i=0; i<N_HALO_FLOATS_E; ++i)
       this->ellipticity_data[i] = new vector<float>(this->num_halos);
 
-    this->tag2idx = new map<int64_t,int>(); 
+    this->tag2idx = new map<int64_t,int>();
 
   }
   else {
@@ -92,7 +92,7 @@ void Particles_test::Set_MPIType(){
     MPI_Get_address(&hp.id,               &disp[1]);
     MPI_Get_address(&hp.rank,             &disp[2]);
 
-    disp[0]-=base; disp[1]-=base; disp[2]-=base; 
+    disp[0]-=base; disp[1]-=base; disp[2]-=base;
 
 
     MPI_Type_struct(3,blocklen,disp,type,&this->particles_test_MPI_Type);
@@ -103,7 +103,7 @@ void Particles_test::Set_MPIType(){
 
 
 void Halos_test::Set_MPIType(){
-    MPI_Datatype type[6] = { MPI_INT64_T, MPI_INT, MPI_INT64_T, MPI_INT, MPI_FLOAT ,MPI_FLOAT};
+    MPI_Datatype type[6] = { MPI_INT64_T, MPI_INT, MPI_INT, MPI_INT, MPI_FLOAT ,MPI_FLOAT};
     int blocklen[6] = {1,1,1,1,N_HALO_FLOATS, N_HALO_FLOATS_E};
     halo_properties_test hp;
 
@@ -241,7 +241,7 @@ halo_properties_test Halos_test::GetProperties(size_t idx) {
 
     for (int i=0; i<N_HALO_FLOATS; ++i)
       halo_properties.float_data[i] = this->float_data[i]->at(idx);
-    
+
     for (int i=0; i<N_HALO_FLOATS_E; ++i)
       halo_properties.ellipticity_data[i] = this->ellipticity_data[i]->at(idx);
 
@@ -415,7 +415,7 @@ void Halos_test::Resize(size_t n) {
 
     for (int i=0; i<N_HALO_FLOATS; ++i)
       this->float_data[i]->resize(this->num_halos);
-  
+
   for (int i=0; i<N_HALO_FLOATS_E;++i)
 	  this->ellipticity_data[i]->resize(this->num_halos);
   }
