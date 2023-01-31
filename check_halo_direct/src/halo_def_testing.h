@@ -1,7 +1,7 @@
 #include <string>
 
 // List all the halo float fields here
-#define N_HALO_FLOATS 31
+#define N_HALO_FLOATS 34
 #define N_HALO_FLOATS_SOD 5
 #define N_HALO_INTS_SOD 1
 #define N_HALO_FLOATS_E 18
@@ -26,9 +26,9 @@ const std::string float_var_names_test[N_HALO_FLOATS] = {
 	"fof_halo_com_x",
 	"fof_halo_com_y",
 	"fof_halo_com_z",
-	"fof_halo_mean_vx",
-	"fof_halo_mean_vy",
-	"fof_halo_mean_vz",
+	"fof_halo_com_vx",
+	"fof_halo_com_vy",
+	"fof_halo_com_vz",
 	"fof_halo_1D_vel_disp",
         "sod_halo_radius",
 	"sod_halo_mass",
@@ -44,9 +44,9 @@ const std::string float_var_names_test[N_HALO_FLOATS] = {
 	"sod_halo_com_x",
 	"sod_halo_com_y",
 	"sod_halo_com_z",
-	// "sod_halo_mean_vx",
-	// "sod_halo_mean_vy",
-	// "sod_halo_mean_vz",
+	"sod_halo_com_vx",
+	"sod_halo_com_vy",
+	"sod_halo_com_vz",
 	"sod_halo_cdelta",
 	"sod_halo_cdelta_error",
 	"sod_halo_c_acc_mass",
@@ -71,9 +71,9 @@ const std::string float_var_names_test2[N_HALO_FLOATS] = {
         "fof_halo_com_x",
         "fof_halo_com_y",
         "fof_halo_com_z",
-        "fof_halo_mean_vx",
-        "fof_halo_mean_vy",
-        "fof_halo_mean_vz",
+        "fof_halo_com_vx",
+        "fof_halo_com_vy",
+        "fof_halo_com_vz",
         "fof_halo_1D_vel_disp",
         "sod_halo_radius",
         "sod_halo_mass",
@@ -89,9 +89,9 @@ const std::string float_var_names_test2[N_HALO_FLOATS] = {
         "sod_halo_com_x",
         "sod_halo_com_y",
         "sod_halo_com_z",
-        // "sod_halo_mean_vx",
-        // "sod_halo_mean_vy",
-        // "sod_halo_mean_vz",
+        "sod_halo_com_vx",
+        "sod_halo_com_vy",
+        "sod_halo_com_vz",
         "sod_halo_cdelta",
         "sod_halo_cdelta_error",
         "sod_halo_c_acc_mass",
