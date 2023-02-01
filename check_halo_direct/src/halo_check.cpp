@@ -18,11 +18,11 @@
 #include "GenericIO.h"
 #include "Partition.h"
 #include "Halos_test.h"
-#include "MurmurHashNeutral2.h" 
+#include "MurmurHashNeutral2.h"
 #include "routines.h"
 
 /// Assumes ids and  are consistent but ordering may have changed
-/// Redistributes aongst ranks and sorts the values for a one-to-one check of the changes in 
+/// Redistributes aongst ranks and sorts the values for a one-to-one check of the changes in
 /// several halo outputs
 
 
@@ -155,7 +155,7 @@ inline unsigned int tag_to_rank(int64_t fof_tag, int n_ranks) {
 }
 
 halo_properties_test alter_ellipticities(halo_properties_test tmp){
-    
+
 
     float s1x = tmp.ellipticity_data[0];
     float s1y = tmp.ellipticity_data[1];
@@ -176,7 +176,7 @@ halo_properties_test alter_ellipticities(halo_properties_test tmp){
     }
     tmp.ellipticity_data[0] = e1/e3;
     tmp.ellipticity_data[1] = e2/e3;
-	    
+
 
     if (N_HALO_FLOATS_E==18){
     float r1x = tmp.ellipticity_data[9];
@@ -198,7 +198,7 @@ void read_halos(Halos_test &H0, string file_name, int file_opt) {
   GIO.openAndReadHeader(GenericIO::MismatchRedistribute);
   size_t num_elems = GIO.readNumElems();
 
-  H0.Resize(num_elems + GIO.requestedExtraSpace()); 
+  H0.Resize(num_elems + GIO.requestedExtraSpace());
 
   GIO.addVariable("fof_halo_tag",   *(H0.fof_halo_tag),true);
   GIO.addVariable("fof_halo_count", *(H0.fof_halo_count), true);
@@ -215,11 +215,11 @@ void read_halos(Halos_test &H0, string file_name, int file_opt) {
  }
   for (int i=0; i<N_HALO_FLOATS_E; ++i)
     GIO.addVariable((const string)float_var_names_ellipticity[i], *(H0.ellipticity_data[i]), true);
-   
+
 
   GIO.readData();
   H0.Resize(num_elems);
-}  
+}
 
 int perform_halo_check(string fof_file, string fof_file2, float lim, float min_mass, float max_mass, map<int64_t, int> *tag_map){
   int rank, n_ranks;
@@ -284,7 +284,7 @@ int perform_halo_check(string fof_file, string fof_file2, float lim, float min_m
     }
   }
 
-  
+
   // sort by destination rank
   sort(fof_halo_send.begin(),fof_halo_send.end(), comp_by_halo_dest);
   sort(fof_halo_send2.begin(),fof_halo_send2.end(), comp_by_halo_dest);
@@ -300,7 +300,7 @@ int perform_halo_check(string fof_file, string fof_file2, float lim, float min_m
   vector<int> fof_halo_recv_cnt2;
   fof_halo_recv_cnt.resize(n_ranks,0);
   fof_halo_recv_cnt2.resize(n_ranks,0);
-  
+
   int sizes[n_ranks];
   vector<int> tag_disp(n_ranks,0);
   MPI_Allgather(&tag_send_count,1,MPI_INT,sizes,1,MPI_INT,Partition::getComm());
@@ -361,8 +361,8 @@ int perform_halo_check(string fof_file, string fof_file2, float lim, float min_m
   MPI_Barrier(Partition::getComm());
 
 
- // send data 
- 
+ // send data
+
   MPI_Alltoallv(&fof_halo_send[0],&fof_halo_send_cnt[0],&fof_halo_send_off[0], H_1.halo_properties_MPI_Type,\
                    &fof_halo_recv[0],&fof_halo_recv_cnt[0],&fof_halo_recv_off[0], H_1.halo_properties_MPI_Type, Partition::getComm());
 
@@ -406,7 +406,7 @@ int perform_halo_check(string fof_file, string fof_file2, float lim, float min_m
         dup_idx2.push_back(i+1);
     }
   }
- 
+
   for (int i=0; i<dup_idx.size();i++){
       H_1.Erase(dup_idx[i]-dup_1);
       dup_1 ++;
@@ -433,36 +433,36 @@ int perform_halo_check(string fof_file, string fof_file2, float lim, float min_m
    int dn_2 = 0;
 
    // if they don't all match up then run correction
-   if (skip_err&&(err>0)){
-       err = 0;
-       int i=0;
-       while ((i < H_1.num_halos)&&(i<H_2.num_halos)){
-          if (H_1.fof_halo_tag->at(i)==H_2.fof_halo_tag->at(i)){
-	     halo_properties_test tmp = H_2.GetProperties(i);
-	     H_3.PushBack(tmp);
-	     assert(H_1.fof_halo_tag->at(i)==H_3.fof_halo_tag->at(i));
-             i += 1;
-           }
-          else {
-           bool not_found = true;
-           for (int j=-200;j<200;j++){
-	       if (((i+j)<H_2.num_halos)&&(i+j)>=0){
-               if (H_1.fof_halo_tag->at(i)==H_2.fof_halo_tag->at(i+j)){
-		  halo_properties_test tmp = H_2.GetProperties(i+j);
-                  H_3.PushBack(tmp);
-		  assert(H_1.fof_halo_tag->at(i)==H_2.fof_halo_tag->at(i+j));
-		  assert(H_1.fof_halo_tag->at(i)==H_3.fof_halo_tag->at(i));
+   if (skip_err && (err > 0)) {
+     err = 0;
+     int i = 0;
+     while ((i < H_1.num_halos) && (i < H_2.num_halos)) {
+       if (H_1.fof_halo_tag->at(i) == H_2.fof_halo_tag->at(i)) {
+         halo_properties_test tmp = H_2.GetProperties(i);
+         H_3.PushBack(tmp);
+         assert(H_1.fof_halo_tag->at(i) == H_3.fof_halo_tag->at(i));
+         i += 1;
+       } else {
+         bool not_found = true;
+         for (int j = -200; j < 200; j++) {
+           if (((i + j) < H_2.num_halos) && (i + j) >= 0) {
+             if (H_1.fof_halo_tag->at(i) == H_2.fof_halo_tag->at(i + j)) {
+               halo_properties_test tmp = H_2.GetProperties(i + j);
+               H_3.PushBack(tmp);
+               assert(H_1.fof_halo_tag->at(i) == H_2.fof_halo_tag->at(i + j));
+               assert(H_1.fof_halo_tag->at(i) == H_3.fof_halo_tag->at(i));
 
-                not_found = false;
-                i+=1; // iterate once found
-                }
-              }
-	   }
-           if (not_found){
-             H_1.Erase(i);
-             --numh1;
+               not_found = false;
+               i += 1; // iterate once found
+               break;
+             }
            }
          }
+         if (not_found) {
+           H_1.Erase(i);
+           --numh1;
+         }
+       }
      }
      while (i<H_1.num_halos){
            bool not_found = true;
@@ -505,19 +505,17 @@ int perform_halo_check(string fof_file, string fof_file2, float lim, float min_m
    dn_1 =  fof_halo_recv_total - H_1.num_halos;
    dn_2 =  fof_halo_recv_total2 - H_2.num_halos;
 
-  }
-  else{
-	  if (rank==0){
-		  cout << "catalogs line up perfectly "<< endl;
-		  cout << "number of halos = " << H_1.num_halos << endl;
-	  }
+   } else {
+   if (rank == 0) {
+         cout << "catalogs line up perfectly " << endl;
+         cout << "number of halos = " << H_1.num_halos << endl;
+   }
    for (int kh=0; kh<H_1.num_halos; kh++){
           halo_properties_test tmp = H_2.GetProperties(kh);
           H_3.PushBack(tmp);
 
    }
-
-  }
+   }
   int ndiff_tot = 0;
   int ndiff_tot2 = 0;
 
